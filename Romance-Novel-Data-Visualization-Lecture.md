@@ -1,15 +1,48 @@
-**Learning Objectives**:
+**Learning Objectives:**
 -- 
 
 **What Is The Goal of Data Visualization?** 
-* --Visual Proof--: A great data visualization provides proof that our data shows what we have described in words. You can certainly take what I say at face value, but critically, you should expect me to show it to you. As scientist, we strive to be worthy of our readers' trust and data visualizations can assist with that.
-* --Data Storytelling--: A picture is worth 1000 words! If you generate a great visualization it can adequately communicate many pieces of information. Let's say we are looking at trends in sales of different colored widgets: red widgets, blue widgets, green widgets, and yellow widgets. We could plot a single line showing how many people purchased widgets between 2020 and 2025 or I could plot four different lines, each for the sale of different colored widgets. Take a look at these visualizations. What do they tell us about our data? 
+--
+* **Visual Proof**: A great data visualization provides proof that our data shows what we have described in words. You can certainly take what I say at face value, but critically, you should expect me to show it to you. As scientist, we strive to be worthy of our readers' trust and data visualizations can assist with that.
+
+* **Data Storytelling**: A picture is worth 1000 words! If you generate a great visualization it can adequately communicate many pieces of information. Let's say we are looking at trends in sales of different colored widgets: red widgets, blue widgets, green widgets, and yellow widgets. We could plot a single line showing how many people purchased widgets between 2020 and 2025 or I could plot four different lines, each for the sale of different colored widgets. Take a look at these visualizations. What do they tell us about our data? 
 
 <div style="display: flex; justify-content: center;">
   <img src="/images/trends.png" width="1000" alt="Trend-Line">
 </div>
 
 The plot on the right shows us that the  number of sales for my red, blue, and green widgets increases over the 2020-2025 time period, but the sales for my yellow widgets decreases! We wouldn't have known that had we not broken down or visualization by the groups within our "Color" variable. By the way, this reversal of trends when looking at subgroups of our variable is known as **Simpson's Paradox**.
+
+* **Presentation Purposes**: No one wants to read all 2000 words on your point point slide during a 15 minute presentation of your results. A visualization will not only summarize your information, but will clearly communicate your findings in a memorable way. Humans remember things that they see! Some of my earliest memories are not auditory, but rather visual. I remember the color of shirt my Grandma wore when she came to pick me up from shool one day when I was a kid. 
+
+**What Makes A Good Visualization?**
+--
+* Clear titles and labels
+* Clearly distinguishable colors - use color blind friendly palettes
+* Tells a data story without being a cluttered appearance
+* Think about your audience! Would you show your 5 year old cousin the same graphic you would show your work collegue? 
+
+**How Can We Create Good Visualizations?**
+--
+* Think about the question that you are trying to solve. 
+* Think about the answer you found in your data. 
+* How can you best tell the story of what you found using a picture?
+
+What tools are at our disposal to generate visualizations in R?
+* Base R
+* ggplot2
+
+Kaggle - Romance Novel Data Set
+* Emphasize how wonderful data science is that you have the opportunity to explore any field at all. Finance, Literature, Physics, Biology, Anthropology, etc. You can apply data science, especially data visualization to express
+* Column Names
+* Data Dimensions
+* Data Types
+* Assessment of Missingness
+
+Base R Visualizations - Let's Eyeball It
+* Histograms
+* 
+
 
 
 
