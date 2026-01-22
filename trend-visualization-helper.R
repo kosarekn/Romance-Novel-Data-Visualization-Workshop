@@ -4,6 +4,7 @@
 
 ## Load a special R package that will help us format the data frame
 library(tidyverse)
+library(ggpubr)
 
 ## set a seed so the data does not change between my run of this code
 set.seed(1234)
@@ -85,5 +86,6 @@ png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/i
 print(plot2)
 dev.off()
 
-
-
+png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/trends.png", width = 3500, height = 1500, res = 300)
+ggarrange(plot1, plot2, nrow = 1, ncol = 2)
+dev.off()
