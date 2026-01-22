@@ -9,6 +9,12 @@
   <img src="/images/single-trend.png" width="500" alt="Single-Trend-Line">
 </div>
 
+More appropriately, I could plot four different lines, each for the sale of different colored widgets. This plot shows me that the  number of sales for my red, blue, and green widgets increases over the 2020-2025 time period, but the sales for my yellow widgets decreases! We wouldn't have known that had we not broken down or visualization by the groups within our "Color" variable. By the way, this reversal of trends when looking at subgroups of our variable is known as **Simpson's Paradox**.
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/multi-trend.png" width="500" alt="Single-Trend-Line">
+</div>
+
 
 
 
