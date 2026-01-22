@@ -6,7 +6,7 @@
 * --Data Storytelling--: A picture is worth 1000 words! If you generate a great visualization it can adequately communicate many pieces of information. Let's say we are looking at trends in sales of different colored widgets: red widgets, blue widgets, green widgets, and yellow widgets. We could plot a single line showing how many people purchased widgets between 2020 and 2025. Take a look at the visualization shown below. What does it tell us about our data? 
 
 
-![Single-Trend-Line](/images/single-trend.png){width: 200px}
+<img src="/images/single-trend.png" width="200" alt="Single-Trend-Line">
 
 
 
