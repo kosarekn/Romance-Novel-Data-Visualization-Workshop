@@ -200,18 +200,118 @@ boxplot(rating ~ release.year,
 
 ```
 
+Base R functions are quick and easy to use. You can apply the limited number of parameters to these visualization functions and have some half way decent plots to get a general understanding of data distribution. But that's just the thing, we are quite limited to the few parameters provided by base R functions. With base R functions we are typically only able to answer simple questions about our data. However, using `ggplot2` we are able to take a layered approach to data visualization that can help us begin to get at complex questions. 
+
 **Creating Plots with ggplot2**
 --
+ggplot2 is an R package that leverages a layered coding framework to create visualizations. What do we mean by a "layered coding framework"? In `ggplot2` we have the power to add elements on top of one another in our data set. For example, we might find it helpful to overlay a distribution plot on a point representing an average so that we gain a better understanding of the disribution of our data. Let's take a look at the anatomy of a `ggplot2` plot before we dive into some more complex questions.
 
-Remember those questions we asked ourselves at the top of the lecture?
+The foundation of every `ggplot2` graphic is the data used to construct the plot. As a first step, we will need to pass our rectangular data frame to the `ggplot2 ` argument. 
+
+```
+##########################################################
+#                BASE OF A GGPLOT PLOT
+##########################################################
+
+## We wil proceed downstream by looking at the subset data frame that does not contain NA values for book.length
+library(tidyr)
+books_sub <- books %>% drop_na(book.length)
+
+## The base of a ggplot2 plot
+ggplot(data = books_sub)
+```
+
+Now, I will happily bet a couple dollars and say that a few of you in this workshop skipped ahead, ran the above code, and said "This didn't do anything." or "This returned a gray box." You are correct! This line of code shouldn't have returned really anything because we have not specificed the variables we wish to visualize. Let's say we want to replicate the scatter plot we made in base R where we plotted the book length on the x-axis and book rating on the y-axis. 
+
+```
+##########################################################
+#                     ADD VARAIABLES
+##########################################################
+
+## Add variables we would like to plot
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating))
+```
+
+You may be wondering at this point, "NOELLE, I STILL DON'T SEE ANY PLOT!?!?!?!" Yes, you shouldn't see any plot quite yet because we have not told `ggplot2` what type of plot we want to generate. To indicate that we would like to create a scatter plot, we have to use the `geom_point()` function. 
+
+```
+##########################################################
+#                   ADD TYPE OF PLOT
+##########################################################
+
+## Add type of plot
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
+geom_point()
+```
+Finally! We have a plot, but it's hedious. We can change the color of the points and the transparency of the points within the `geom_point()` function. 
+
+```
+##########################################################
+#         CHANGING DISCRETE COLOR OF ALL POINTS
+##########################################################
+
+## Add type of plot
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
+geom_point(col = "#9AC4F8", alpha = 0.5)
+```
+
+Now, that's looking much prettier. Let's add proper x- and y-axis labels as well as title.
+
+```
+##########################################################
+#                     ADD AXIS LABELS
+##########################################################
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
+  geom_point(col = "#9AC4F8", alpha = 0.5) + 
+  labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating")
+```
+We can even draw a trend line like we did in base R, but with much more fluidity in `ggplot2`. Conveniently, `ggplot2` defaults to providing a gray shaded area around the line. This gray shaded area represents a 95% confidence interval. 
+
+```
+##########################################################
+#                     ADD A TREND LINE
+##########################################################
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
+  geom_point(col = "#9AC4F8", alpha = 0.5) + 
+  labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + geom_smooth(method = "lm", col = purple)
+```
+
+Using `ggplot2` we can color our points by a continuous variable like release year.
+
+```
+##########################################################
+#            COLOR BY A CONTINUOUS VARIABLE
+##########################################################
+library(viridis)
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
+  geom_point(alpha = 0.5) + 
+  labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis() +
+  geom_text(aes(label=ifelse(release.year>2015,as.character(rowname(books_sub)),'')),hjust=0,vjust=0)
+```
+
+We can label certain points in our scatter plot with ggplot2. In the below example, we are labeling all of the books with page lengths greater than 1000.
+
+```
+##########################################################
+#                       LABEL POINTS
+##########################################################
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
+  geom_point(alpha = 0.5) + 
+  labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis() +
+  geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black")
+
+```
+
+By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall those questions we asked ourselves at the top of the lecture:
 
 * Who are the highest rated authors?
 * What are the highest rated books?
 * Are longer or shorter books rated more highly?
 * What book topics have the highest and lowest rating?
 
-It is important that we keep these questions in mind when we are creating visualizations. 
-
+It is important that we keep these questions in mind when we are creating visualizations, especially in ggplot2. 
 
 
 
