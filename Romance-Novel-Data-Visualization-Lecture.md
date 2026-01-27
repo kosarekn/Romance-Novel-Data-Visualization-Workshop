@@ -46,7 +46,6 @@ On the topic of exploring data suited to our interests, I have chosen a romance 
 
 * Who are the highest rated authors?
 * What are the highest rated books?
-* Are longer or shorter books rated more highly?
 * What book topics have the highest and lowest rating?
 
 *Note: This data set was taken from [Kaggle](https://www.kaggle.com/datasets). Kaggle provides free access to tons of really intersting data! Take a look and play around!*
@@ -308,10 +307,9 @@ By this point you are gaining an understanding of just how flexible ggplot2 can 
 
 * Who are the highest rated authors?
 * What are the highest rated books?
-* Are longer or shorter books rated more highly?
 * What book topics have the highest and lowest rating?
 
-It is important that we keep these questions in mind when we are creating visualizations, especially in ggplot2. 
+It is important that we keep these questions in mind when we are creating visualizations. Let's create a visualization to try and answer the first question in our list: Who are the highest rated authors? 
 
 
 
