@@ -52,6 +52,7 @@ On the topic of exploring data suited to our interests, I have chosen a romance 
 *Note: This data set was taken from [Kaggle](https://www.kaggle.com/datasets). Kaggle provides free access to tons of really intersting data! Take a look and play around!*
 
 **Exploratory Data Analysis (EDA)**
+--
 
 It is vital to have a clear understanding of the contents of the data set with which we are working before jumping into data visualization. Thus, an initial exploratory data analysis (EDA) should be undertaken to determine the dimensions of the data, row names, column names, data types, and missingness. Let's go ahead and read in our data:
 
@@ -120,6 +121,7 @@ for (col in book_columns){
 Wow! It looks like there are 601 "NA" values in the `book.length` variable. It is important to consider why this might be the case. If I were to guess, I would say that multiple versions of some of these books have been released with varying page lengths so instead of reporting multiple page lengths for differentbook versions, the authors of this data set simply left the length as "NA". In some cases, depending on the data, we might consider imputing NA values, however, this is beyond the scope of today's workshop so we will leave the data frame as is and move on to visualizations with the knowledge that the `book.length` variable has quite a bit of missingness.  
 
 **Base R Visualizations - Let's Eyeball It**
+--
 At the beginnig of this lecture, I mentioned that base R has some great functions that we can use to take a cursory look at the distribution of our data. I would recommend using base R functions when you initially get a new data set and you are hoping to churn out some preliminary visualizations for your PI or group members for a project. 
 
 *Histograms*
@@ -175,7 +177,7 @@ plot(x, y, main = "Book Length vs. Rating", xlab = "Book length (Pages)", ylab =
 
 ```
 *Box Plot*
-An additional way in which we can explore relationships between two variables is to create a box plot. I'm interested in looking at the distribution of ratings for books between 2010 and 2014. To do so, we will subset of main data frame to contain only 
+An additional way in which we can explore relationships between two variables is to create a box plot. I'm interested in looking at the distribution of ratings for books between 2010 and 2014. To do so, we will subset of main data frame to contain only data from 2010-2014. We will also convert the `release.year` to a factor, which is a special case of a vector. Finally, we will add color to our box plots. On that note, I would like to introduce you all to [Coolors](https://coolors.co/?home). Coolors is a great resource to help you pick out custom color palettes for your R plots! Or they can help you pick out a new color for your bathroom walls.
 
 ```
 ##########################################################
@@ -199,8 +201,16 @@ boxplot(rating ~ release.year,
 ```
 
 **Creating Plots with ggplot2**
+--
 
+Remember those questions we asked ourselves at the top of the lecture?
 
+* Who are the highest rated authors?
+* What are the highest rated books?
+* Are longer or shorter books rated more highly?
+* What book topics have the highest and lowest rating?
+
+It is important that we keep these questions in mind when we are creating visualizations. 
 
 
 
