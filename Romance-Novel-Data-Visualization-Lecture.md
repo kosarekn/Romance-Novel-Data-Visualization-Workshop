@@ -1,6 +1,10 @@
 **Learning Objectives:**
 -- 
 
+* Conduct Rudimentary Exploratory Data Analysis (EDA)
+* Generate Simple Plots with Base R
+* Build Custom Plots with `ggplot2` to Answer Copmlex Questions
+
 **What Is The Goal of Data Visualization?** 
 --
 * **Visual Proof**: A great data visualization provides proof that our data shows what we have described in words. You can certainly take what I say at face value, but critically, you should expect me to show it to you. As scientist, we strive to be worthy of our readers' trust and data visualizations can assist with that.
@@ -42,11 +46,9 @@ The plot on the right shows us that the number of sales for red, blue, and green
 **Kaggle - Romance Novel Data Set**
 Allow me to get up on my soap box for a moment and expound upon one of the most beautiful aspects of data science. We each bring expertise from our diverse and enriching backgrounds in Finance, Biology, Literature, Art, Anthropology, Physics, and whatever other discipline we fell in love with at the age of 7 while watching a NOVA episode. Developing our data science skills opens the door to research in any of these fields. If you have some data, you bet we can find a visualization or analysis appropriate for that data.  
 
-On the topic of exploring data suited to our interests, I have chosen a romance novel data set for this workshop. It will come to the suprise of no one here that I am not going home and reading Dostoevsky, Thoreau, or even Austen. Nay, I go home and I read garbage. One could argue that I am consuming the equivalent of skittles for my brain and they would be entirely correct. But I am not on this planet with the strict purpose of being useful and productive. I want to enjoy sitting with my hot chocolate and my books. That said, let's take a look at the contents of the data set with which we will be working and with the aim of finding answers to the following questions:
+On the topic of exploring data suited to our interests, I have chosen a romance novel data set for this workshop. It will come to the suprise of no one here that I am not going home and reading Dostoevsky, Thoreau, or even Austen. Nay, I go home and I read garbage. One could argue that I am consuming the equivalent of skittles for my brain and they would be entirely correct. But I am not on this planet with the strict purpose of being useful and productive. I want to enjoy sitting with my hot chocolate and my books. That said, let's take a look at the contents of the data set with which we will be working and with the aim of finding an answer to the following questions:
 
 * Do longer books get better ratings?
-* 
-* 
 
 *Note: This data set was taken from [Kaggle](https://www.kaggle.com/datasets). Kaggle provides free access to tons of really intersting data! Take a look and play around!*
 
@@ -303,11 +305,9 @@ ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = rel
 
 ```
 
-By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall those questions we asked ourselves at the top of the lecture:
+By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall the question we asked ourselves at the top of the lecture:
 
 * Do longer books get better ratings?
-* 
-* 
 
 It is important that we keep these questions in mind when we are creating visualizations. Let's create a visualization to try and answer the first question in our list: Do longer boks get better ratings? Based on this question we will want to generate a visualization from the `book.length` and `rating` variables. Recall from using our `str()` function that `book.length` is coded as an integer and `rating` is coded as a numeric. While we could keep both variables as continuous, let's convert `book.length` to a categorical variable by binning each book into a quartile based on the number of pages. `ggplot2` provides us functionality to do just this using the `cat_number()` function. Take a look at how we are using this function below. The `n=4` indicates that I want to bin the `book.length` variable into four categories.
 
@@ -397,7 +397,7 @@ Cool! I can now see that there are about the same number of ratings for each of 
 
 ```
 ##########################################################
-#               ADDING A JITTER TO THE PLOT
+#               ADDING MEAN POINT TO THE PLOT
 ##########################################################
 ggplot(books, aes(x = cut_number(book.length, n = 4), 
                   y = rating)) +
@@ -417,9 +417,52 @@ ggplot(books, aes(x = cut_number(book.length, n = 4),
   theme_bw()
 ```
 
+Given that we do seem to be seeing an increase in book rating and book length, I'd like to make a determination if the inceases we are seeing between book length categories are statistically significant. While this workship is not intended to provide a comprehensive overview of statistical testing we will implement nonparametric testing to determine significance. The nonparametric test we will be using is the Wilcox Rank Sum test and it does not require that you know the distribution of your data, but it does require that your data be independent. We can plot the results of the significance testing directly on the plot using the `ggpubr()` function `stat_compare_means()`. Make sure to indicate which comparisons you would like to test!
 
+```
+##########################################################
+#             ADD STATISTICAL TESTING RESULTS
+##########################################################
+library(ggpubr)
+ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                  y = rating)) +
+  geom_violin(fill = "#068D9D", alpha = 0.5) + 
+  geom_boxplot(fill = "#53599A", width = 0.35) + 
+  geom_jitter(color = "black", 
+              alpha = 0.5, width = 0.2) +
+  stat_summary(fun = "mean", 
+               geom = "point", 
+               color = "red", 
+               size = 3) +
+  labs(x = "Book Length (Pages)", ## Add labels
+       y = "Rating", 
+       title = "Book Length Quantiles \nand Their Ratings") +
+  ##Change the names of the x-axis labels to be pretty
+  scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
+  theme_bw() +
+  stat_compare_means(comparisons = list(c("[10,320]", "(320,369]"), 
+                                 c("(320,369]", "(369,416]"), 
+                                 c("(369,416]", "(416,1.04e+03]")),
+              test = "wilcox.test",
+              textsize = 4)
+```
 
+Nicely done! It looks like there exists a statistically significant change in book rating between the 370-416 and 417-1040 book length categories. There look like there are slight increases in the other categories, albiet insignificant. 
 
+**Conclusions**
+--
+
+During today's workshop we conducted exploratory data analysis on our romance novel data set to determine the content and types of data available to us. We generated plots in base R to geain a general understanding of the distribution of our data. Primarily, our focus today has been on building custom plots in `ggplot2`. While the visualizations we generated today are limited to the more "conventionally used" plots, I encourage you to check out some [online resources](https://r-graph-gallery.com/ggplot2-package.html) to see further plotting possibilities with `ggplot2`.
+
+**Activity**
+--
+
+Take a moment to think about this question: How has the average length and quality of romance novels changed over time, and is there a relationship between these trends?
+
+```
+## Consider a dual-axis line plot (one line showing average length of book by year and the other showing average rating by year) with points.
+## YOUR CODE HERE
+```
 
 
 
