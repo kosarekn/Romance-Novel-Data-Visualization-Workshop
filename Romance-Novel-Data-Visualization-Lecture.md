@@ -44,9 +44,9 @@ Allow me to get up on my soap box for a moment and expound upon one of the most 
 
 On the topic of exploring data suited to our interests, I have chosen a romance novel data set for this workshop. It will come to the suprise of no one here that I am not going home and reading Dostoevsky, Thoreau, or even Austen. Nay, I go home and I read garbage. One could argue that I am consuming the equivalent of skittles for my brain and they would be entirely correct. But I am not on this planet with the strict purpose of being useful and productive. I want to enjoy sitting with my hot chocolate and my books. That said, let's take a look at the contents of the data set with which we will be working and with the aim of finding answers to the following questions:
 
-* Who are the highest rated authors?
-* What are the highest rated books?
-* What book topics have the highest and lowest rating?
+* Do longer books get better ratings?
+* 
+* 
 
 *Note: This data set was taken from [Kaggle](https://www.kaggle.com/datasets). Kaggle provides free access to tons of really intersting data! Take a look and play around!*
 
@@ -305,15 +305,117 @@ ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = rel
 
 By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall those questions we asked ourselves at the top of the lecture:
 
-* Who are the highest rated authors?
-* What are the highest rated books?
-* What book topics have the highest and lowest rating?
+* Do longer books get better ratings?
+* 
+* 
 
-It is important that we keep these questions in mind when we are creating visualizations. Let's create a visualization to try and answer the first question in our list: Who are the highest rated authors? 
+It is important that we keep these questions in mind when we are creating visualizations. Let's create a visualization to try and answer the first question in our list: Do longer boks get better ratings? Based on this question we will want to generate a visualization from the `book.length` and `rating` variables. Recall from using our `str()` function that `book.length` is coded as an integer and `rating` is coded as a numeric. While we could keep both variables as continuous, let's convert `book.length` to a categorical variable by binning each book into a quartile based on the number of pages. `ggplot2` provides us functionality to do just this using the `cat_number()` function. Take a look at how we are using this function below. The `n=4` indicates that I want to bin the `book.length` variable into four categories.
 
+```
+##########################################################
+#                      SET UP GGPLOT
+##########################################################
+ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                           y = rating))
+```
 
+Now that we have decided on exactly what kind of data we want to input into our plot, we should take some time to consider what kind of plot(s) we would like to generate. We could go about plotting only the average rating for each of the four categories, but that doesn't give us a robust idea of all of the ratings. Instead, we might consider creating a violin plot that will show us the distribution of the ratings for each of the four book length quartiles. Take a look at the below code. If you were just looking at this data for the first time, what would you take away from this plot? What else would you want to know?
 
+```
+##########################################################
+#                CREATE BASIC VIOLIN PLOT
+##########################################################
+ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                  y = rating)) +
+  geom_violin(fill = "#068D9D") + ## Add violin plot
+  labs(x = "Book Length (Pages)", ## Add labels
+       y = "Rating", 
+       title = "Book Length Quantiles \nand Their Ratings") +
+       ##Change the names of the x-axis labels to be pretty
+  scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
+  ## Interesting.... what is this?
+  theme_minimal()
+```
 
+You may have noticed in the code above that we added `theme_minimal()`. `ggplot2` provides custom [themes](https://ggplot2.tidyverse.org/reference/ggtheme.html) with different colored background and fonts from which you can choose. You can even create your own themes or edit existing themes to your liking. Use the link above to explore a different theme!
+
+```
+##########################################################
+#                EXPLORING A DIFFERENT THEME
+##########################################################
+ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                  y = rating)) +
+  geom_violin(fill = "#068D9D") + ## Add violin plot
+  labs(x = "Book Length (Pages)", ## Add labels
+       y = "Rating", 
+       title = "Book Length Quantiles \nand Their Ratings") +
+       ##Change the names of the x-axis labels to be pretty
+  scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
+  ## Interesting.... what is this?
+  theme_bw()
+```
+
+Returning to the content of the visualization itself, the violin plots give us a decent understanding of the distribution of our data and if I squint just right I can convince myself that booking rating increases with book length. This visualization could use a bit more detail to help us answer our question. I personally would like to know about the summary statistics associated with the ratings for each of the book length quartiles. One visualization I know of that will display summary statistics is a box plot. `ggplot2` box plots show the median, the 25th percentile (Q1), the 75th percentile (Q3), the minimum and maximum, as well as any outliers. Let's overlay the violin plot we already generated with the box plot. 
+
+```
+##########################################################
+#          ADDING A BOX PLOT ON THE VIOLIN PLOT
+##########################################################
+
+ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                  y = rating)) +
+  geom_violin(fill = "#068D9D", alpha = 0.5) + ## Changed the transparency of the violin plot so its prettier.
+  geom_boxplot(fill = "#53599A", width = 0.35) + ## Add box plot. Make sure to change the width of the box plot so it fits within the violin plot!
+labs(x = "Book Length (Pages)", ## Add labels
+     y = "Rating", 
+     title = "Book Length Quantiles \nand Their Ratings") +
+  ##Change the names of the x-axis labels to be pretty
+  scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
+  theme_bw()
+```
+
+This is looking a bit more interesting! I can see from the medians in the box plot that there seem to be increases in ratings as book length increases. Perhaps the number of ratings could be skewing these results and making it look like longer books have higher ratings. For example, let's say there are 100 ratings for the 0-320 category and only two ratings for the 417-1040 category. The 100 ratings have a greater range of higher and lower ratings and it is entirely possible that the two ratings for the 417-1040 category are super high. We can take a look at the number of ratings in each category by placing a jitter over each of the violin and box plots. The `geom_jitter()` function in `ggplot2()` gives us this exact functionality. Take a look at the code below and notice how many ratings have been recorded for each category.
+
+```
+##########################################################
+#               ADDING A JITTER TO THE PLOT
+##########################################################
+ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                  y = rating)) +
+  geom_violin(fill = "#068D9D", alpha = 0.5) + 
+  geom_boxplot(fill = "#53599A", width = 0.35) + 
+  geom_jitter(color = "black", 
+              alpha = 0.5, width = 0.2) + ## This jitter 
+labs(x = "Book Length (Pages)", ## Add labels
+     y = "Rating", 
+     title = "Book Length Quantiles \nand Their Ratings") +
+  ##Change the names of the x-axis labels to be pretty
+  scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
+  theme_bw()
+```
+Cool! I can now see that there are about the same number of ratings for each of the categories not including the "NA" category. The increase in ratings across book length categories that we are seeing is looking like it might be real based on our visualization. However, recall that the histogram of the ratings we geneated earlier in the lecture indicate that the ratings follow a normal distribution and therefore, the mean might be a better summary statistic for our data. Let's add the mean rating for each of the book length categories to the plot as a simple red point using the `stat_summary()` function provided by `ggplot2`. Take a look at the below code. Do you see increases in average rating?
+
+```
+##########################################################
+#               ADDING A JITTER TO THE PLOT
+##########################################################
+ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                  y = rating)) +
+  geom_violin(fill = "#068D9D", alpha = 0.5) + 
+  geom_boxplot(fill = "#53599A", width = 0.35) + 
+  geom_jitter(color = "black", 
+              alpha = 0.5, width = 0.2) +
+  stat_summary(fun = "mean", 
+               geom = "point", 
+               color = "red", 
+               size = 3) +
+  labs(x = "Book Length (Pages)", ## Add labels
+       y = "Rating", 
+       title = "Book Length Quantiles \nand Their Ratings") +
+  ##Change the names of the x-axis labels to be pretty
+  scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
+  theme_bw()
+```
 
 
 
