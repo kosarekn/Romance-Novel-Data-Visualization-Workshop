@@ -146,6 +146,10 @@ hist(books[,"rating"], main = "Rating Across All Titles", xlab = "Rating", ylab 
 hist(books[,"rating"], main = "Rating Across All Titles", xlab = "Rating", ylab = "Frequency", col = "cornflowerblue", breaks = 30)
 ```
 
+<div style="display: flex; justify-content: center;">
+  <img src="/images/base-r-histograms.png" width="1000" alt="Trend-Line">
+</div>
+
 *Scatter Plot*
 In addition to histograms, base R provides functionality to create scatterplots using the `plot()` function. The plot function takes a vector for x values and a vector for y values and plots them together. I'm wondering if we could see any sort of trend between book length and rating? I'll remove any values where there is "NA" for `book.length` before plotting. 
 
@@ -177,6 +181,11 @@ abline(model, col = "red", lwd = 2)
 plot(x, y, main = "Book Length vs. Rating", xlab = "Book length (Pages)", ylab = "Rating", col = "darkgreen", pch = 25)
 
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/base-r-scatter.png" width="1000" alt="Trend-Line">
+</div>
+
 *Box Plot*
 An additional way in which we can explore relationships between two variables is to create a box plot. I'm interested in looking at the distribution of ratings for books between 2010 and 2014. To do so, we will subset of main data frame to contain only data from 2010-2014. We will also convert the `release.year` to a factor, which is a special case of a vector. Finally, we will add color to our box plots. On that note, I would like to introduce you all to [Coolors](https://coolors.co/?home). Coolors is a great resource to help you pick out custom color palettes for your R plots! Or they can help you pick out a new color for your bathroom walls.
 
@@ -200,6 +209,10 @@ boxplot(rating ~ release.year,
         xlab = "Year", ylab = "Rating")
 
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/base-r-boxplot.png" width="1000" alt="Trend-Line">
+</div>
 
 Base R functions are quick and easy to use. You can apply the limited number of parameters to these visualization functions and have some half way decent plots to get a general understanding of data distribution. But that's just the thing, we are quite limited to the few parameters provided by base R functions. With base R functions we are typically only able to answer simple questions about our data. However, using `ggplot2` we are able to take a layered approach to data visualization that can help us begin to get at complex questions. 
 
@@ -244,7 +257,12 @@ You may be wondering at this point, "NOELLE, I STILL DON'T SEE ANY PLOT!?!?!?!" 
 ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
 geom_point()
 ```
-Finally! We have a plot, but it's hedious. We can change the color of the points and the transparency of the points within the `geom_point()` function. 
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-scatter1.png" width="1000" alt="Trend-Line">
+</div> 
+
+Finally! We have a plot, but it's hedious. We can change the color of the points and the transparency of the points within the `geom_point()` function.
 
 ```
 ##########################################################
@@ -256,6 +274,10 @@ ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
 geom_point(col = "#9AC4F8", alpha = 0.5)
 ```
 
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-scatter2.png" width="1000" alt="Trend-Line">
+</div> 
+
 Now, that's looking much prettier. Let's add proper x- and y-axis labels as well as title.
 
 ```
@@ -266,6 +288,11 @@ ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
   geom_point(col = "#9AC4F8", alpha = 0.5) + 
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating")
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-scatter3.png" width="1000" alt="Trend-Line">
+</div> 
+
 We can even draw a trend line like we did in base R, but with much more fluidity in `ggplot2`. Conveniently, `ggplot2` defaults to providing a gray shaded area around the line. This gray shaded area represents a 95% confidence interval. 
 
 ```
@@ -276,6 +303,10 @@ ggplot(data = books_sub, mapping = aes(x = book.length, y = rating)) +
   geom_point(col = "#9AC4F8", alpha = 0.5) + 
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + geom_smooth(method = "lm", col = purple)
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-scatter4.png" width="1000" alt="Trend-Line">
+</div> 
 
 Using `ggplot2` we can color our points by a continuous variable like release year.
 
@@ -291,6 +322,10 @@ ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = rel
   geom_text(aes(label=ifelse(release.year>2015,as.character(rowname(books_sub)),'')),hjust=0,vjust=0)
 ```
 
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-scatter5.png" width="1000" alt="Trend-Line">
+</div> 
+
 We can label certain points in our scatter plot with ggplot2. In the below example, we are labeling all of the books with page lengths greater than 1000.
 
 ```
@@ -304,6 +339,10 @@ ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = rel
   geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black")
 
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-scatter6.png" width="1000" alt="Trend-Line">
+</div> 
 
 By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall the question we asked ourselves at the top of the lecture:
 
@@ -337,6 +376,10 @@ ggplot(books, aes(x = cut_number(book.length, n = 4),
   theme_minimal()
 ```
 
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-violin1.png" width="1000" alt="Trend-Line">
+</div> 
+
 You may have noticed in the code above that we added `theme_minimal()`. `ggplot2` provides custom [themes](https://ggplot2.tidyverse.org/reference/ggtheme.html) with different colored background and fonts from which you can choose. You can even create your own themes or edit existing themes to your liking. Use the link above to explore a different theme!
 
 ```
@@ -354,6 +397,10 @@ ggplot(books, aes(x = cut_number(book.length, n = 4),
   ## Interesting.... what is this?
   theme_bw()
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-violin2.png" width="1000" alt="Trend-Line">
+</div> 
 
 Returning to the content of the visualization itself, the violin plots give us a decent understanding of the distribution of our data and if I squint just right I can convince myself that booking rating increases with book length. This visualization could use a bit more detail to help us answer our question. I personally would like to know about the summary statistics associated with the ratings for each of the book length quartiles. One visualization I know of that will display summary statistics is a box plot. `ggplot2` box plots show the median, the 25th percentile (Q1), the 75th percentile (Q3), the minimum and maximum, as well as any outliers. Let's overlay the violin plot we already generated with the box plot. 
 
@@ -374,6 +421,10 @@ labs(x = "Book Length (Pages)", ## Add labels
   theme_bw()
 ```
 
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-violin3.png" width="1000" alt="Trend-Line">
+</div> 
+
 This is looking a bit more interesting! I can see from the medians in the box plot that there seem to be increases in ratings as book length increases. Perhaps the number of ratings could be skewing these results and making it look like longer books have higher ratings. For example, let's say there are 100 ratings for the 0-320 category and only two ratings for the 417-1040 category. The 100 ratings have a greater range of higher and lower ratings and it is entirely possible that the two ratings for the 417-1040 category are super high. We can take a look at the number of ratings in each category by placing a jitter over each of the violin and box plots. The `geom_jitter()` function in `ggplot2()` gives us this exact functionality. Take a look at the code below and notice how many ratings have been recorded for each category.
 
 ```
@@ -393,6 +444,11 @@ labs(x = "Book Length (Pages)", ## Add labels
   scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
   theme_bw()
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-violin4.png" width="1000" alt="Trend-Line">
+</div> 
+
 Cool! I can now see that there are about the same number of ratings for each of the categories not including the "NA" category. The increase in ratings across book length categories that we are seeing is looking like it might be real based on our visualization. However, recall that the histogram of the ratings we geneated earlier in the lecture indicate that the ratings follow a normal distribution and therefore, the mean might be a better summary statistic for our data. Let's add the mean rating for each of the book length categories to the plot as a simple red point using the `stat_summary()` function provided by `ggplot2`. Take a look at the below code. Do you see increases in average rating?
 
 ```
@@ -416,6 +472,10 @@ ggplot(books, aes(x = cut_number(book.length, n = 4),
   scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
   theme_bw()
 ```
+
+<div style="display: flex; justify-content: center;">
+  <img src="/images/ggplot2-violin5.png" width="1000" alt="Trend-Line">
+</div> 
 
 Given that we do seem to be seeing an increase in book rating and book length, I'd like to make a determination if the inceases we are seeing between book length categories are statistically significant. While this workship is not intended to provide a comprehensive overview of statistical testing we will implement nonparametric testing to determine significance. The nonparametric test we will be using is the Wilcox Rank Sum test and it does not require that you know the distribution of your data, but it does require that your data be independent. We can plot the results of the significance testing directly on the plot using the `ggpubr()` function `stat_compare_means()`. Make sure to indicate which comparisons you would like to test!
 
@@ -447,7 +507,43 @@ ggplot(books, aes(x = cut_number(book.length, n = 4),
               textsize = 4)
 ```
 
+<div style="display: flex; justify-content: center;">
+  <img src="/images/final-plot.png" width="1000" alt="Trend-Line">
+</div> 
+
 Nicely done! It looks like there exists a statistically significant change in book rating between the 370-416 and 417-1040 book length categories. There look like there are slight increases in the other categories, albiet insignificant. 
+
+We have created a rather nice looking plot. Let's save it as a .png file so we can print it out and put it on the refridgerator to show our families.
+
+```
+##########################################################
+#                     SAVING FIGURES
+##########################################################
+png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/final-plot.png", res = 300, width = 1500, height = 1000)
+print(ggplot(books, aes(x = cut_number(book.length, n = 4), 
+                  y = rating)) +
+  geom_violin(fill = "#068D9D", alpha = 0.5) + 
+  geom_boxplot(fill = "#53599A", width = 0.35) + 
+  geom_jitter(color = "black", 
+              alpha = 0.5, width = 0.2) +
+  stat_summary(fun = "mean", 
+               geom = "point", 
+               color = "red", 
+               size = 3) +
+  labs(x = "Book Length (Pages)", ## Add labels
+       y = "Rating", 
+       title = "Book Length Quantiles \nand Their Ratings") +
+  ##Change the names of the x-axis labels to be pretty
+  scale_x_discrete(labels= c("0-320", "321-369","370-416", "417-1040", "NA")) +
+  theme_bw() +
+  stat_compare_means(comparisons = list(c("[10,320]", "(320,369]"), 
+                                 c("(320,369]", "(369,416]"), 
+                                 c("(369,416]", "(416,1.04e+03]")),
+              test = "wilcox.test",
+              textsize = 4))
+dev.off()
+
+```
 
 **Conclusions**
 --
