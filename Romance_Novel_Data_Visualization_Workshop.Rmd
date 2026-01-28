@@ -464,7 +464,7 @@ We have created a rather nice looking plot. Let's save it as a .png file so we c
 ##########################################################
 #                     SAVING FIGURES
 ##########################################################
-png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/final-plot.png", res = 300, width = 1500, height = 1000)
+png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/final-plot.png", res = 300, width = 1500, height = 1200)
 print(ggplot(books, aes(x = cut_number(book.length, n = 4), 
                   y = rating)) +
   geom_violin(fill = "#068D9D", alpha = 0.5) + 
