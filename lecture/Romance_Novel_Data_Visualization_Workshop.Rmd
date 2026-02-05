@@ -294,10 +294,12 @@ Using `ggplot2` we can color our points by a continuous variable like release ye
 #            COLOR BY A CONTINUOUS VARIABLE
 ##########################################################
 library(viridis)
-ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
+png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/ggplot2-scatter5.png", res = 300, width = 1800, height = 1200)
+print(ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
   geom_point(alpha = 0.5) +
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
-  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year")
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year"))
+dev.off()
 ```
 
 We can label certain points in our scatter plot with ggplot2. In the below example, we are labeling all of the books with page lengths greater than 1000.
@@ -306,11 +308,13 @@ We can label certain points in our scatter plot with ggplot2. In the below examp
 ##########################################################
 #                       LABEL POINTS
 ##########################################################
-ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
+png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/ggplot2-scatter6.png", res = 300, width = 1800, height = 1200)
+print(ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
   geom_point(alpha = 0.5) + 
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
   geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year") +
-  geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black")
+  geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black"))
+dev.off()
 ```
 
 By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall the question we asked ourselves at the top of the lecture:
@@ -458,7 +462,7 @@ ggplot(books, aes(x = cut_number(book.length, n = 4),
 
 Nicely done! It looks like there exists a statistically significant change in book rating between the 370-416 and 417-1040 book length categories. There look like there are slight increases in the other categories, albiet insignificant. 
 
-We have created a rather nice looking plot. Let's save it as a .png file so we can print it out and put it on the refridgerator to show our families.
+We have created a rather nice looking plot. Let's save it as a .png file so we can print it out and put it on the refrigerator to show our families.
 
 ```{r}
 ##########################################################
