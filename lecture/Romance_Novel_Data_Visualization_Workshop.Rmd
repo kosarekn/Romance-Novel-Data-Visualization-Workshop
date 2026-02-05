@@ -220,7 +220,8 @@ The foundation of every `ggplot2` graphic is the data used to construct the plot
 ##########################################################
 #                BASE OF A GGPLOT PLOT
 ##########################################################
-
+## Import library
+library(ggplot2)
 ## We wil proceed downstream by looking at the subset data frame that does not contain NA values for book.length
 library(tidyr)
 books_sub <- books %>% drop_na(book.length)
@@ -294,9 +295,9 @@ Using `ggplot2` we can color our points by a continuous variable like release ye
 ##########################################################
 library(viridis)
 ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
-  geom_point(alpha = 0.5) + 
+  geom_point(alpha = 0.5) +
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
-  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis() 
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year")
 ```
 
 We can label certain points in our scatter plot with ggplot2. In the below example, we are labeling all of the books with page lengths greater than 1000.
@@ -308,9 +309,8 @@ We can label certain points in our scatter plot with ggplot2. In the below examp
 ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
   geom_point(alpha = 0.5) + 
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
-  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis() +
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year") +
   geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black")
-
 ```
 
 By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall the question we asked ourselves at the top of the lecture:

@@ -318,7 +318,7 @@ library(viridis)
 ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
   geom_point(alpha = 0.5) + 
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
-  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis() +
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year") +
   geom_text(aes(label=ifelse(release.year>2015,as.character(rowname(books_sub)),'')),hjust=0,vjust=0)
 ```
 
@@ -335,7 +335,7 @@ We can label certain points in our scatter plot with ggplot2. In the below examp
 ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
   geom_point(alpha = 0.5) + 
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
-  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis() +
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year") +
   geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black")
 
 ```
