@@ -9,7 +9,7 @@ date: "2026-01-22"
 
 * Conduct Rudimentary Exploratory Data Analysis (EDA)
 * Generate Simple Plots with Base R
-* Build Custom Plots with `ggplot2` to Answer Copmlex Questions
+* Build Custom Plots with `ggplot2` to Answer Complex Questions
 
 **What Is The Goal of Data Visualization?** 
 --
@@ -70,7 +70,7 @@ It is vital to have a clear understanding of the contents of the data set with w
 ## Read in data
 books <- read.csv("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/data/books.csv")
 
-## Some titles are repeated so we will just keep one of the titles fr simplicity 
+## Some titles are repeated so we will just keep one of the titles for simplicity 
 books <- books[!duplicated(books$title), ]
 
 ## Make the first column the book titles 
@@ -94,7 +94,7 @@ Now that we have loaded in our data let's have a look at the column names in our
 colnames(books)
 ```
 
-Great, for each title in our data we have informaiton on the author, release year, book length, rating, number of ratings, and a short synopsis of the book. I'm curious though, how many books are in this data set? We can use the R functions `dim()` and `str()` to gain an understanding of how much data we have.
+Great, for each title in our data we have information on the author, release year, book length, rating, number of ratings, and a short synopsis of the book. I'm curious though, how many books are in this data set? We can use the R functions `dim()` and `str()` to gain an understanding of how much data we have.
 
 ```{r}
 ##########################################################
@@ -129,17 +129,17 @@ Wow! It looks like there are 601 "NA" values in the `book.length` variable. It i
 
 **Base R Visualizations - Let's Eyeball It**
 --
-At the beginnig of this lecture, I mentioned that base R has some great functions that we can use to take a cursory look at the distribution of our data. I would recommend using base R functions when you initially get a new data set and you are hoping to churn out some preliminary visualizations for your PI or group members for a project. 
+At the beginning of this lecture, I mentioned that base R has some great functions that we can use to take a cursory look at the distribution of our data. I would recommend using base R functions when you initially get a new data set and you are hoping to churn out some preliminary visualizations for your PI or group members for a project. 
 
 *Histograms*
-I'm intersted in the system used to rate books in this data set. Using the `hist()` function in base R, we can create a histogram that shows us the distribution of the ratings across all of the titles in our data frame. 
+I'm interested in the system used to rate books in this data set. Using the `hist()` function in base R, we can create a histogram that shows us the distribution of the ratings across all of the titles in our data frame. 
 
 ```{r}
 ##########################################################
 #            GENERATING A HISTOGRAM WITH BASE R
 ##########################################################
 
-## Generate a hisogram of book ratings
+## Generate a histogram of book ratings
 hist(books[,"rating"])
 
 ## Let's add an appropriate main title as well as x and y axis labels
@@ -212,7 +212,7 @@ Base R functions are quick and easy to use. You can apply the limited number of 
 
 **Creating Plots with ggplot2**
 --
-ggplot2 is an R package that leverages a layered coding framework to create visualizations. What do we mean by a "layered coding framework"? In `ggplot2` we have the power to add elements on top of one another in our data set. For example, we might find it helpful to overlay a distribution plot on a point representing an average so that we gain a better understanding of the disribution of our data. Let's take a look at the anatomy of a `ggplot2` plot before we dive into some more complex questions.
+ggplot2 is an R package that leverages a layered coding framework to create visualizations. What do we mean by a "layered coding framework"? In `ggplot2` we have the power to add elements on top of one another in our data set. For example, we might find it helpful to overlay a distribution plot on a point representing an average so that we gain a better understanding of the distribution of our data. Let's take a look at the anatomy of a `ggplot2` plot before we dive into some more complex questions.
 
 The foundation of every `ggplot2` graphic is the data used to construct the plot. As a first step, we will need to pass our rectangular data frame to the `ggplot2 ` argument. 
 
@@ -223,7 +223,6 @@ The foundation of every `ggplot2` graphic is the data used to construct the plot
 ## Import library
 library(ggplot2)
 ## We wil proceed downstream by looking at the subset data frame that does not contain NA values for book.length
-library(tidyr)
 books_sub <- books %>% drop_na(book.length)
 
 ## The base of a ggplot2 plot
@@ -294,12 +293,10 @@ Using `ggplot2` we can color our points by a continuous variable like release ye
 #            COLOR BY A CONTINUOUS VARIABLE
 ##########################################################
 library(viridis)
-png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/ggplot2-scatter5.png", res = 300, width = 1800, height = 1200)
-print(ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
   geom_point(alpha = 0.5) +
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
-  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year"))
-dev.off()
+  geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year")
 ```
 
 We can label certain points in our scatter plot with ggplot2. In the below example, we are labeling all of the books with page lengths greater than 1000.
@@ -308,13 +305,11 @@ We can label certain points in our scatter plot with ggplot2. In the below examp
 ##########################################################
 #                       LABEL POINTS
 ##########################################################
-png("/Users/f002yt8/Documents/GitHub/Romance-Novel-Data-Visualization-Workshop/images/ggplot2-scatter6.png", res = 300, width = 1800, height = 1200)
-print(ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
+ggplot(data = books_sub, mapping = aes(x = book.length, y = rating, colour = release.year)) +
   geom_point(alpha = 0.5) + 
   labs(x = "Book Length (Pages)", y = "Rating", title = "Book Length vs. Rating") + 
   geom_smooth(method = "lm", col = "purple") + scale_colour_viridis(name = "Release Year") +
-  geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black"))
-dev.off()
+  geom_text(aes(label=ifelse(book.length>1000, rownames(books_sub), '')), hjust=1.01, vjust=0.25, col = "black")
 ```
 
 By this point you are gaining an understanding of just how flexible ggplot2 can be. Let's get into the meat and potatoes of this lecture, shall we? Recall the question we asked ourselves at the top of the lecture:
@@ -430,7 +425,7 @@ ggplot(books, aes(x = cut_number(book.length, n = 4),
   theme_bw()
 ```
 
-Given that we do seem to be seeing an increase in book rating and book length, I'd like to make a determination if the inceases we are seeing between book length categories are statistically significant. While this workship is not intended to provide a comprehensive overview of statistical testing we will implement nonparametric testing to determine significance. The nonparametric test we will be using is the Wilcox Rank Sum test and it does not require that you know the distribution of your data, but it does require that your data be independent. We can plot the results of the significance testing directly on the plot using the `ggpubr()` function `stat_compare_means()`. Make sure to indicate which comparisons you would like to test!
+Given that we do seem to be seeing an increase in book rating and book length, I'd like to make a determination if the increases we are seeing between book length categories are statistically significant. While this workshop is not intended to provide a comprehensive overview of statistical testing we will implement nonparametric testing to determine significance. The nonparametric test we will be using is the Wilcox Rank Sum test and it does not require that you know the distribution of your data, but it does require that your data be independent. We can plot the results of the significance testing directly on the plot using the `ggpubr()` function `stat_compare_means()`. Make sure to indicate which comparisons you would like to test!
 
 ```{r}
 ##########################################################
@@ -497,7 +492,7 @@ dev.off()
 **Conclusions**
 --
 
-During today's workshop we conducted exploratory data analysis on our romance novel data set to determine the content and types of data available to us. We generated plots in base R to geain a general understanding of the distribution of our data. Primarily, our focus today has been on building custom plots in `ggplot2`. While the visualizations we generated today are limited to the more "conventionally used" plots, I encourage you to check out some [online resources](https://r-graph-gallery.com/ggplot2-package.html) to see further plotting possibilities with `ggplot2`.
+During today's workshop we conducted exploratory data analysis on our romance novel data set to determine the content and types of data available to us. We generated plots in base R to gain a general understanding of the distribution of our data. Primarily, our focus today has been on building custom plots in `ggplot2`. While the visualizations we generated today are limited to the more "conventionally used" plots, I encourage you to check out some [online resources](https://r-graph-gallery.com/ggplot2-package.html) to see further plotting possibilities with `ggplot2`.
 
 **Activity**
 --
