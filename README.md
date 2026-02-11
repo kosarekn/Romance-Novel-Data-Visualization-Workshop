@@ -7,8 +7,8 @@ This README will guide you through the steps necessary to prepare for this works
 ## **Prerequisites**
 
 ### 1) Install R and RStudio
-* Download and install [R]("https://cran.r-project.org/")
-* Download and install [RStudio]("https://posit.co/download/rstudio-desktop/")
+* Download and install [R](https://cran.r-project.org/)
+* Download and install [RStudio](https://posit.co/download/rstudio-desktop/)
 
 Make sure both are successfully installed before moving on. 
 
